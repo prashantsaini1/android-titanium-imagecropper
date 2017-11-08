@@ -53,23 +53,10 @@ public class ImagecropModule extends KrollModule implements TiActivityResultHand
 	// Methods
 	@Kroll.method
 	public void crop(KrollDict options) {
-		callback = (KrollFunction) options.get("callback");
-		String path = (String) options.get("path");
-		
-//		Log.i(LCAT, "** Path = " + path);
-		
+		callback = (KrollFunction) options.get("callback");	
 		Activity activity = TiApplication.getAppCurrentActivity();
-		
-		TiActivitySupport actSupport = (TiActivitySupport) activity;
-
-//		Intent intent = CropImage.activity().getIntent(activity);
-//		actSupport.launchActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE, this);
-//		CropImage.startPickImageActivity(TiApplication.getInstance().getApplicationContext());
-		
 		Intent intent = new Intent(activity, ImageDemo.class);
 		activity.startActivity(intent);
-		
-		Log.i(LCAT, "5...");
 	}
 
 	@Override
@@ -82,21 +69,6 @@ public class ImagecropModule extends KrollModule implements TiActivityResultHand
 	@Override
 	public void onResult(Activity activity, int requestCode, int resultCode, Intent intent) {
 		Log.i(LCAT, "Result Code = " + resultCode + " : Req Code = " + requestCode);
-		
-//		if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-//            CropImage.ActivityResult result = CropImage.getActivityResult(intent);
-//            
-//            if (resultCode == Activity.RESULT_OK) {
-//                Uri resultUri = result.getUri();
-//                KrollDict callbackResult = new KrollDict();
-//                callbackResult.put("imagePath", resultUri.getPath());
-//                callback.callAsync(getKrollObject(), callbackResult);
-//                
-//                
-//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                Exception error = result.getError();
-//            }
-//        }
 	}
 }
 

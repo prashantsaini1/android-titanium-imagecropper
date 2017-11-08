@@ -26,10 +26,10 @@ public class ImageDemo extends AppCompatActivity implements View.OnClickListener
 		super.onCreate(bundle);
 		getIDs();
 		setContentView(layout_id);
-		Button btn = (Button) findViewById(btn_id);
-		btn.setOnClickListener(this);
 		
 		im = (ImageView) findViewById(image_id);
+		Button btn = (Button) findViewById(btn_id);
+		btn.setOnClickListener(this);
 	}
 	
     public void onClick(View v) {
