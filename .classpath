@@ -9,7 +9,6 @@
 	<classpathentry kind="lib" path="/Users/prashant/Library/Application Support/Titanium/mobilesdk/osx/6.3.0.GA/android/titanium.jar"/>
 	<classpathentry kind="lib" path="/Users/prashant/Library/Application Support/Titanium/mobilesdk/osx/6.3.0.GA/android/kroll-common.jar"/>
 	<classpathentry kind="lib" path="/Users/prashant/Library/Application Support/Titanium/mobilesdk/osx/6.3.0.GA/android/kroll-apt.jar"/>
-	<classpathentry kind="lib" path="android/lib/android-image-cropper-2.5.1.aar"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>

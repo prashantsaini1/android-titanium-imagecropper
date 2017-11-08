@@ -55,7 +55,7 @@ public class ImageDemo extends AppCompatActivity implements View.OnClickListener
     		im.setImageURI(imageUri);
         
     		// starts crashing here with this result immediately : RC = 203 : R = 0
-    		// CropImage.activity(imageUri).start(this);
+    		 CropImage.activity(imageUri).start(this);
     	}
     }
 }
