@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 1.0.0
+apiversion: 3
+architectures: armeabi-v7a x86
+description: imagecrop
+author: Prashant Saini
+license: Specify your license
+copyright: Copyright (c) 2017 by Your Company
+
+# these should not be edited
+name: imagecrop
+moduleid: in.prashant.imagecrop
+guid: 50ddfead-520c-43fe-8adc-7fadcc37cc1c
+platform: android
+minsdk: 6.3.0.GA
