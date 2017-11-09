@@ -13,6 +13,7 @@ import org.appcelerator.kroll.KrollFunction;
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.titanium.TiApplication;
+import org.appcelerator.titanium.TiBlob;
 import org.appcelerator.titanium.util.TiActivityResultHandler;
 import org.appcelerator.titanium.util.TiActivitySupport;
 import org.appcelerator.kroll.common.Log;
@@ -20,6 +21,7 @@ import org.appcelerator.kroll.common.TiConfig;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -54,9 +56,16 @@ public class ImagecropModule extends KrollModule implements TiActivityResultHand
 	@Kroll.method
 	public void crop(KrollDict options) {
 		callback = (KrollFunction) options.get("callback");	
+		
 		Activity activity = TiApplication.getAppCurrentActivity();
-		Intent intent = new Intent(activity, ImageDemo.class);
-		activity.startActivity(intent);
+		TiActivitySupport actS = (TiActivitySupport) activity; 
+
+		//		Intent intent = new Intent(activity, ImageDemo.class);
+		//		activity.startActivity(intent);
+		//      startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+		
+		Intent intent = CropImage.activity().getIntent(activity);
+		actS.launchActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE, this);
 	}
 
 	@Override
@@ -67,8 +76,26 @@ public class ImagecropModule extends KrollModule implements TiActivityResultHand
 	}
 
 	@Override
-	public void onResult(Activity activity, int requestCode, int resultCode, Intent intent) {
-		Log.i(LCAT, "Result Code = " + resultCode + " : Req Code = " + requestCode);
+	public void onResult(Activity activity, int requestCode, int resultCode, Intent data) {
+    	if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            KrollDict callbackResult = new KrollDict();
+            callbackResult.put("media", result.getUri().getEncodedPath());
+            callback.callAsync(getKrollObject(), callbackResult);
+        }
 	}
+	
+//	@Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+////    	[INFO] :   Intial Path = /storage/emulated/0/com.test.test/camera.jpg
+////		[INFO] :   I/**      : RC = 203 : R = -1
+////		[INFO] :   I/***     : Path = /data/user/0/com.test.test/cache/cropped-1441703969.jpg
+//    			
+//    	if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+//            Uri resultUri = result.getUri();
+//            im.setImageURI(resultUri);
+//        }
+//    }
 }
 

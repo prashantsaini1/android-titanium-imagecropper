@@ -1,6 +1,6 @@
 package in.prashant.imagecrop;
 
-import org.appcelerator.titanium.TiApplication;
+
 import org.appcelerator.titanium.util.TiRHelper;
 
 import android.app.Activity;
@@ -33,7 +33,7 @@ public class ImageDemo extends AppCompatActivity implements View.OnClickListener
 	}
 	
     public void onClick(View v) {
-    	CropImage.startPickImageActivity(this);
+    	CropImage.activity().start(ImageDemo.this);
     }
     
     private void getIDs() {
@@ -46,16 +46,14 @@ public class ImageDemo extends AppCompatActivity implements View.OnClickListener
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	// Image picker result is fine as : RC = 200 : R = -1
-    	Log.i("**", "RC = " + requestCode + " : R = " + resultCode);
-
-    	// handle result of pick image chooser
-    	if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-    		Uri imageUri = CropImage.getPickImageResultUri(this, data);
-    		im.setImageURI(imageUri);
-        
-    		// starts crashing here with this result immediately : RC = 203 : R = 0
-    		 CropImage.activity(imageUri).start(this);
-    	}
+//    	[INFO] :   Intial Path = /storage/emulated/0/com.test.test/camera.jpg
+//		[INFO] :   I/**      : RC = 203 : R = -1
+//		[INFO] :   I/***     : Path = /data/user/0/com.test.test/cache/cropped-1441703969.jpg
+    			
+    	if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            Uri resultUri = result.getUri();
+            im.setImageURI(resultUri);
+        }
     }
 }

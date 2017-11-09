@@ -6,6 +6,7 @@
 	-->
 	<iphone>
 	</iphone>
+
 	
 	<android xmlns:android="http://schemas.android.com/apk/res/android">
     	<manifest>
@@ -23,4 +24,6 @@
 	
 	<mobileweb>
 	</mobileweb>
+	<property name="android.javac.source" type="string">1.7</property>
+	<property name="android.javac.target" type="string">1.7</property>
 </ti:module>
