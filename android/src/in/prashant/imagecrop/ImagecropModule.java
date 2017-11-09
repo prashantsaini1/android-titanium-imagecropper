@@ -79,23 +79,14 @@ public class ImagecropModule extends KrollModule implements TiActivityResultHand
 	public void onResult(Activity activity, int requestCode, int resultCode, Intent data) {
     	if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            // "/data/user/0/com.test.test/cache/cropped-1441703969.jpg"
+            String imagePath = "file://" + result.getUri().getEncodedPath(); 
+            
             KrollDict callbackResult = new KrollDict();
-            callbackResult.put("media", result.getUri().getEncodedPath());
+            callbackResult.put("imagePath", imagePath);
             callback.callAsync(getKrollObject(), callbackResult);
         }
 	}
-	
-//	@Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-////    	[INFO] :   Intial Path = /storage/emulated/0/com.test.test/camera.jpg
-////		[INFO] :   I/**      : RC = 203 : R = -1
-////		[INFO] :   I/***     : Path = /data/user/0/com.test.test/cache/cropped-1441703969.jpg
-//    			
-//    	if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//            Uri resultUri = result.getUri();
-//            im.setImageURI(resultUri);
-//        }
-//    }
 }
 
