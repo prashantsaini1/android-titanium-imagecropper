@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -33,16 +34,10 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 @Kroll.module(name="Imagecrop", id="in.prashant.imagecrop")
 public class ImagecropModule extends KrollModule implements TiActivityResultHandler
 {
-
-	// Standard Debugging variables
 	private static final String LCAT = "ImagecropModule";
-
-	// You can define constants with @Kroll.constant, for example:
-	// @Kroll.constant public static final String EXTERNAL_NAME = value;
-	
 	private KrollFunction callback;
 
-	
+
 	public ImagecropModule() {
 		super();
 	}
@@ -52,21 +47,58 @@ public class ImagecropModule extends KrollModule implements TiActivityResultHand
 		Log.d(LCAT, "inside onAppCreate");
 	}
 
+	private String getStringValue(KrollDict options, String key) {
+		return (String) (options.containsKeyAndNotNull(key) ? options.get(key) : "");
+	}
+
+	private void setupValues(CropImage.ActivityBuilder cropBuilder, KrollDict options) {
+		callback = (KrollFunction) options.get(Params.CALLBACK);
+	}
+
 	// Methods
 	@Kroll.method
 	public void crop(KrollDict options) {
-		callback = (KrollFunction) options.get("callback");	
-		
-		Activity activity = TiApplication.getAppCurrentActivity();
-		TiActivitySupport actS = (TiActivitySupport) activity; 
+		if (null != options) {
+			if (options.containsKeyAndNotNull(Params.CALLBACK)) {
+				if (options.get(Params.CALLBACK) instanceof KrollFunction) {
+					String sourceFile = getStringValue(options, Params.IMAGE_SOURCE);
+					sourceFile = sourceFile.trim();
+					sourceFile = sourceFile.replaceFirst("file://", "");
 
-		//		Intent intent = new Intent(activity, ImageDemo.class);
-		//		activity.startActivity(intent);
-		//      startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
-		
-		Intent intent = CropImage.activity().getIntent(activity);
-		actS.launchActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE, this);
+					CropImage.ActivityBuilder cropBuilder = CropImage.activity();
+					if (!sourceFile.isEmpty()) {
+						sourceFile = "file://" + sourceFile;
+						cropBuilder = CropImage.activity(Uri.parse(sourceFile));
+
+					} else {
+						cropBuilder = CropImage.activity();
+					}
+
+					setupValues(cropBuilder, options);
+
+					Activity activity = TiApplication.getAppCurrentActivity();
+					Intent intent = cropBuilder.getIntent(activity);
+					
+					if (options.containsKeyAndNotNull(Params.ACTIVITY_THEME)) {
+						String theme = (String) options.get(Params.ACTIVITY_THEME);
+						theme = theme.trim();
+						
+						if (!theme.isEmpty()) {
+							theme = "style." + theme;
+							intent.putExtra(Params.ACTIVITY_THEME, theme);
+						}
+					}
+					
+					TiActivitySupport actSupport = (TiActivitySupport) activity;
+					actSupport.launchActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE, this);
+
+				} else {
+					Toast.makeText(TiApplication.getAppCurrentActivity().getApplicationContext(), "Parameters not passed.", Toast.LENGTH_SHORT).show();
+				}
+			}
+		}
 	}
+
 
 	@Override
 	public void onError(Activity activity, int requestCode, Exception exc) {
@@ -75,18 +107,16 @@ public class ImagecropModule extends KrollModule implements TiActivityResultHand
         callback.callAsync(getKrollObject(), callbackResult);
 	}
 
+
 	@Override
 	public void onResult(Activity activity, int requestCode, int resultCode, Intent data) {
+		Log.i(LCAT, "Result received..");
     	if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-
-            // "/data/user/0/com.test.test/cache/cropped-1441703969.jpg"
-            String imagePath = "file://" + result.getUri().getEncodedPath(); 
-            
+            String imagePath = "file://" + result.getUri().getEncodedPath();
             KrollDict callbackResult = new KrollDict();
             callbackResult.put("imagePath", imagePath);
             callback.callAsync(getKrollObject(), callbackResult);
         }
 	}
 }
-

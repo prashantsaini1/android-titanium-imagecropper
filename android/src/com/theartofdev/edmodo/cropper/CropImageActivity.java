@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import in.prashant.imagecrop.Params;
 import in.prashant.imagecrop.Utils;
 
 import java.io.File;
@@ -56,11 +57,19 @@ public class CropImageActivity extends AppCompatActivity
   @SuppressLint("NewApi")
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    
+    // set theme first
+    Intent intent = getIntent();
+    if (intent.hasExtra(Params.ACTIVITY_THEME)) {
+    	String theme = intent.getStringExtra(Params.ACTIVITY_THEME);
+    	setTheme(Utils.getR(theme));
+    }
+    
     setContentView(Utils.getR("layout.crop_image_activity"));
 
     mCropImageView = (CropImageView) findViewById(Utils.getR("id.cropImageView"));
 
-    Bundle bundle = getIntent().getBundleExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE);
+    Bundle bundle = intent.getBundleExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE);
     mCropImageUri = bundle.getParcelable(CropImage.CROP_IMAGE_EXTRA_SOURCE);
     mOptions = bundle.getParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS);
 
