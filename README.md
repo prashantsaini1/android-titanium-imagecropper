@@ -3,6 +3,7 @@ A robust image cropping module based on [Android-Image-Cropper by ArthurHub](htt
 
 * Fully customizable with tons of options. [Read More Here](https://github.com/ArthurHub/Android-Image-Cropper/wiki)
 * Capture image from camera, or pick from gallery, or Google Drive or other compatible apps & crop them instantly.
+* Rotate & flip image at run-time.
 * Provides a convenient & faster way to save cropped images with appropriate compression.
 
 | Image Picker UI             |  Crop Window UI |
