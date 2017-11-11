@@ -1,14 +1,10 @@
-#
-# this is your module manifest and used by Titanium
-# during compilation, packaging, distribution, etc.
-#
 version: 1.0.0
 apiversion: 3
 architectures: armeabi-v7a x86
-description: imagecrop
+description: Android-Titanium image cropping module for cropping camera/gallery/G-Drive etc. images 
 author: Prashant Saini
-license: Specify your license
-copyright: Copyright (c) 2017 by Your Company
+license: Apache 2.0
+copyright: Copyright (c) 2017 by Prashant Saini, 2016 by Arthur Teplitzki, 2013 by Edmodo, Inc.
 
 # these should not be edited
 name: imagecrop

@@ -16,6 +16,7 @@ import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.TiBlob;
 import org.appcelerator.titanium.util.TiActivityResultHandler;
 import org.appcelerator.titanium.util.TiActivitySupport;
+import org.appcelerator.titanium.util.TiConvert;
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.kroll.common.TiConfig;
 
@@ -48,11 +49,115 @@ public class ImagecropModule extends KrollModule implements TiActivityResultHand
 	}
 
 	private String getStringValue(KrollDict options, String key) {
-		return (String) (options.containsKeyAndNotNull(key) ? options.get(key) : "");
+		String value = "" + (options.containsKeyAndNotNull(key) ? options.get(key) : "");
+		return value.trim();
 	}
 
-	private void setupValues(CropImage.ActivityBuilder cropBuilder, KrollDict options) {
+	private void setStringValue(Intent intent, KrollDict options, String key) {
+		String value = getStringValue(options, key);
+
+		if (!value.isEmpty()) {
+			intent.putExtra(key, value);
+		}
+	}
+
+	private void setupInitialValues(CropImage.ActivityBuilder cropBuilder, Intent intent, KrollDict options) {
 		callback = (KrollFunction) options.get(Params.CALLBACK);
+
+		String destFile = getStringValue(options, Params.IMAGE_DEST);
+		String theme = getStringValue(options, Params.ACTIVITY_THEME);
+		String title = getStringValue(options, Params.TITLE);
+		String cropBtnTitle = getStringValue(options, Params.CROP_BTN_TITLE);
+		String menuIconsColor = getStringValue(options, Params.MENU_ICON_COLOR);
+		String overlay_bg = getStringValue(options, Params.OVERLAY_BG_COLOR);
+		String borderColor = getStringValue(options, Params.BORDER_COLOR);
+		String borderWidth = getStringValue(options, Params.BORDER_WIDTH);
+		String guidelines = getStringValue(options, Params.GUIDELINES);
+		String guidelinesColor = getStringValue(options, Params.GUIDELINES_COLOR);
+		String guidelinesWidth = getStringValue(options, Params.GUIDELINES_WIDTH);
+		String aspectX = getStringValue(options, Params.ASPECT_RATIO_X);
+		String aspectY = getStringValue(options, Params.ASPECT_RATIO_Y);
+		String fixAspect = getStringValue(options, Params.FIX_ASPECT_RATIO);
+		String cornerColor = getStringValue(options, Params.CORNER_COLOR);
+		String cornerWidth = getStringValue(options, Params.CORNER_WIDTH);
+		String cornerLength = getStringValue(options, Params.CORNER_LENGTH);
+		String cornerOffset = getStringValue(options, Params.CORNER_OFFSET);
+
+		setStringValue(intent, options, Params.STATUS_BAR_COLOR);
+		setStringValue(intent, options, Params.BAR_COLOR);
+		setStringValue(intent, options, Params.BACKGROUND_COLOR);
+
+		destFile = destFile.replaceFirst("file://", "");
+		if (!destFile.isEmpty()) {
+			destFile = "file://" + destFile;
+			cropBuilder.setOutputUri(Uri.parse(destFile));
+		}
+
+		if (!theme.isEmpty()) {
+			theme = "style." + theme;
+			intent.putExtra(Params.ACTIVITY_THEME, theme);
+		}
+
+		if (!title.isEmpty()) {
+			cropBuilder.setActivityTitle(title);
+		}
+
+		if (!cropBtnTitle.isEmpty()) {
+			cropBuilder.setCropMenuCropButtonTitle(cropBtnTitle);
+		}
+
+		if (!menuIconsColor.isEmpty()) {
+			cropBuilder.setActivityMenuIconColor(TiConvert.toColor(menuIconsColor));
+		}
+
+		if (!overlay_bg.isEmpty()) {
+			cropBuilder.setBackgroundColor(TiConvert.toColor(overlay_bg));
+		}
+
+		if (!borderColor.isEmpty()) {
+			cropBuilder.setBorderLineColor(TiConvert.toColor(borderColor));
+		}
+
+		if (!borderWidth.isEmpty()) {
+			cropBuilder.setBorderLineThickness(TiConvert.toFloat(borderWidth));
+		}
+
+		if (!guidelines.isEmpty()) {
+			if (guidelines.equalsIgnoreCase("false") || guidelines.equalsIgnoreCase("0")) {
+				cropBuilder.setGuidelines(CropImageView.Guidelines.OFF);
+			}
+		}
+
+		if (!guidelinesColor.isEmpty()) {
+			cropBuilder.setGuidelinesColor(TiConvert.toColor(guidelinesColor));
+		}
+
+		if (!guidelinesWidth.isEmpty()) {
+			cropBuilder.setGuidelinesThickness(TiConvert.toFloat(guidelinesWidth));
+		}
+
+		if (!aspectX.isEmpty() && !aspectY.isEmpty()) {
+			cropBuilder.setAspectRatio(TiConvert.toInt(aspectX), TiConvert.toInt(aspectY));
+
+		} else if (!fixAspect.isEmpty()) {
+			cropBuilder.setFixAspectRatio(TiConvert.toBoolean(fixAspect));
+		}
+
+		if (!cornerColor.isEmpty()) {
+			cropBuilder.setBorderCornerColor(TiConvert.toColor(cornerColor));
+		}
+
+		if (!cornerWidth.isEmpty()) {
+			cropBuilder.setBorderCornerThickness(TiConvert.toFloat(cornerWidth));
+		}
+
+		if (!cornerLength.isEmpty()) {
+			cropBuilder.setBorderCornerLength(TiConvert.toFloat(cornerLength));
+		}
+
+		if (!cornerOffset.isEmpty()) {
+			cropBuilder.setBorderCornerOffset(TiConvert.toFloat(cornerOffset));
+		}
 	}
 
 	// Methods
@@ -62,7 +167,6 @@ public class ImagecropModule extends KrollModule implements TiActivityResultHand
 			if (options.containsKeyAndNotNull(Params.CALLBACK)) {
 				if (options.get(Params.CALLBACK) instanceof KrollFunction) {
 					String sourceFile = getStringValue(options, Params.IMAGE_SOURCE);
-					sourceFile = sourceFile.trim();
 					sourceFile = sourceFile.replaceFirst("file://", "");
 
 					CropImage.ActivityBuilder cropBuilder = CropImage.activity();
@@ -74,21 +178,12 @@ public class ImagecropModule extends KrollModule implements TiActivityResultHand
 						cropBuilder = CropImage.activity();
 					}
 
-					setupValues(cropBuilder, options);
-
 					Activity activity = TiApplication.getAppCurrentActivity();
 					Intent intent = cropBuilder.getIntent(activity);
-					
-					if (options.containsKeyAndNotNull(Params.ACTIVITY_THEME)) {
-						String theme = (String) options.get(Params.ACTIVITY_THEME);
-						theme = theme.trim();
-						
-						if (!theme.isEmpty()) {
-							theme = "style." + theme;
-							intent.putExtra(Params.ACTIVITY_THEME, theme);
-						}
-					}
-					
+
+					// set acitvity customisations like primary color, status bar color, etc.
+					setupInitialValues(cropBuilder, intent, options);
+
 					TiActivitySupport actSupport = (TiActivitySupport) activity;
 					actSupport.launchActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE, this);
 
@@ -102,21 +197,31 @@ public class ImagecropModule extends KrollModule implements TiActivityResultHand
 
 	@Override
 	public void onError(Activity activity, int requestCode, Exception exc) {
-		KrollDict callbackResult = new KrollDict();
-        callbackResult.put("error", "Some error occured");
-        callback.callAsync(getKrollObject(), callbackResult);
+		sendResult(false, exc.getMessage(), "");
 	}
 
 
 	@Override
 	public void onResult(Activity activity, int requestCode, int resultCode, Intent data) {
-		Log.i(LCAT, "Result received..");
-    	if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            String imagePath = "file://" + result.getUri().getEncodedPath();
-            KrollDict callbackResult = new KrollDict();
-            callbackResult.put("imagePath", imagePath);
-            callback.callAsync(getKrollObject(), callbackResult);
+    	if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+    		CropImage.ActivityResult result = CropImage.getActivityResult(data);
+    		
+    		if (resultCode == Activity.RESULT_OK) {
+    			String imagePath = "file://" + result.getUri().getEncodedPath();
+    			sendResult(true, "", imagePath);
+                
+    		} else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+    			Exception error = result.getError();
+    			sendResult(false, error.getMessage(), "");
+      	    }
         }
+	}
+	
+	private void sendResult(boolean success, String error, String image) {
+		KrollDict callbackResult = new KrollDict();
+		callbackResult.put("success", success);
+		callbackResult.put("error", error);
+		callbackResult.put("image", image);
+        callback.callAsync(getKrollObject(), callbackResult);
 	}
 }

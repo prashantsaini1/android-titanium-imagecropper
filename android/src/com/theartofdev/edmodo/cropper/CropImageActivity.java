@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -29,12 +30,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 import in.prashant.imagecrop.Params;
 import in.prashant.imagecrop.Utils;
 
 import java.io.File;
 import java.io.IOException;
+
+import org.appcelerator.titanium.util.TiConvert;
 
 /**
  * Built-in activity for image cropping.<br>
@@ -57,14 +62,14 @@ public class CropImageActivity extends AppCompatActivity
   @SuppressLint("NewApi")
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    
+
     // set theme first
     Intent intent = getIntent();
     if (intent.hasExtra(Params.ACTIVITY_THEME)) {
     	String theme = intent.getStringExtra(Params.ACTIVITY_THEME);
     	setTheme(Utils.getR(theme));
     }
-    
+
     setContentView(Utils.getR("layout.crop_image_activity"));
 
     mCropImageView = (CropImageView) findViewById(Utils.getR("id.cropImageView"));
@@ -102,6 +107,30 @@ public class CropImageActivity extends AppCompatActivity
               : getResources().getString(Utils.getR("string.crop_image_activity_title"));
       actionBar.setTitle(title);
       actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    boolean barColor = intent.hasExtra(Params.STATUS_BAR_COLOR);
+    boolean bgColor = intent.hasExtra(Params.BACKGROUND_COLOR);
+
+    if ( (Build.VERSION.SDK_INT >= 21) && (bgColor || barColor) ) {
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        if (barColor) {
+            String colorPrimaryDark = intent.getStringExtra(Params.STATUS_BAR_COLOR);
+            window.setStatusBarColor(TiConvert.toColor(colorPrimaryDark));
+        }
+
+        if (bgColor) {
+            String backgroundColor = intent.getStringExtra(Params.BACKGROUND_COLOR);
+            window.setBackgroundDrawable(TiConvert.toColorDrawable(backgroundColor));
+        }
+    }
+
+    if (intent.hasExtra(Params.BAR_COLOR)) {
+        String colorPrimary = intent.getStringExtra(Params.BAR_COLOR);
+        actionBar.setBackgroundDrawable(TiConvert.toColorDrawable(colorPrimary));
     }
   }
 
