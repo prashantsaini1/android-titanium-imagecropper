@@ -7,7 +7,7 @@ A robust image cropping module based on [Android-Image-Cropper by ArthurHub](htt
 
 | Image Picker UI             |  Crop Window UI |
 |:-------------------------:|:-------------------------:|
-|  ![](https://github.com/prashantsaini1/titanium-android-imagepicker/blob/master/select_app.png)   |  ![](https://github.com/prashantsaini1/titanium-android-imagepicker/blob/master/sample.png)  |
+|  ![](https://github.com/prashantsaini1/android-titanium-imagecropper/blob/master/select_app.png)   |  ![](https://github.com/prashantsaini1/android-titanium-imagecropper/blob/master/sample.png)  |
 
 
 ## Requirements & Installation
