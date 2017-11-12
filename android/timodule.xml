@@ -22,6 +22,6 @@
 	
 	<mobileweb>
 	</mobileweb>
-	<property name="android.javac.source" type="string">1.7</property>
-	<property name="android.javac.target" type="string">1.7</property>
+	<property name="android.javac.source" type="string">1.8</property>
+	<property name="android.javac.target" type="string">1.8</property>
 </ti:module>
