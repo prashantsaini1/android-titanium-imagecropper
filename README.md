@@ -1,4 +1,4 @@
-# Titanium Android -Image cropping module
+# Titanium Android - Image Cropping module
 A robust image cropping module based on [Android-Image-Cropper by ArthurHub](https://github.com/ArthurHub/Android-Image-Cropper) library.
 
 * Fully customizable with tons of options. [Read More Here](https://github.com/ArthurHub/Android-Image-Cropper/wiki)
@@ -16,9 +16,10 @@ A robust image cropping module based on [Android-Image-Cropper by ArthurHub](htt
 * [Download latest module version from here](https://github.com/prashantsaini1/android-titanium-imagecropper/tree/master/android/dist)
 * Unzip it, put it in your Titanium project modules folder & add these lines to your tiapp.xml <modules> node.
 
-## Don't forget to add these lines to your tiapp.xml. (Last 2 lines force Titanium SDK to compile project using JRE 1.8 instead of default 1.6 due to the fact that Titanium uses Javac Source & Target version 1.6 by default even you set the JDK 1.8 in your system.)
+#### Must add these lines to your tiapp.xml (Last 2 lines force Titanium to use "javac source & target as 1.8" instead of default 1.6 even you set the Java 1.8 in your system)
 ```
 <module platform="android">in.prashant.imagecrop</module>
+
 <property name="android.javac.source" type="string">1.8</property>
 <property name="android.javac.target" type="string">1.8</property>
 ```
@@ -51,8 +52,8 @@ A robust image cropping module based on [Android-Image-Cropper by ArthurHub](htt
 |  boolean **fixAspect**    | Whether to fix aspect ratio or not, if aspect ratio is set, then it behaves as true    | false |
 |  String **cornerBorderColor**     | Color of corners inside-around the border of cropping-window    | white |
 |  float **cornerBorderWidth**     | Thickness of these corners     | 3dp |
-|  int **cornerBorderLength**     | Length of these corners    | 14dp |
-|  int **cornerBorderOffset**     | Padding between corner-lines & border of the cropping-window  | 5dp |
+|  float **cornerBorderLength**     | Length of these corners    | 14dp |
+|  float **cornerBorderOffset**     | Padding between corner-lines & border of the cropping-window  | 5dp |
 |  String **sourceFile**     | Path for image file to start cropping with.   | none |
 |  String **destFile**     | Path to save cropped image at.  | Temp Cache file |
 |  function **callback**     | Callback method to call upon success/error result. See example  | Mandatory |
@@ -85,7 +86,7 @@ require('in.prashant.imagecrop').crop({
 <hr/>
 
 ## Thanks & Credits
-* [Arthur](https://github.com/ArthurHub) for creating awesome Android library.
+* [Arthur Teplitzki](https://github.com/ArthurHub) for creating awesome Android library.
 
 
 ## LICENSE
