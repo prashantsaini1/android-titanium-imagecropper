@@ -9,7 +9,6 @@
 "/Users/prashant/Projects/Appcelerator_Studio_Workspace/imagecrop/android/src/com/theartofdev/edmodo/cropper/CropOverlayView.java"
 "/Users/prashant/Projects/Appcelerator_Studio_Workspace/imagecrop/android/src/com/theartofdev/edmodo/cropper/CropWindowHandler.java"
 "/Users/prashant/Projects/Appcelerator_Studio_Workspace/imagecrop/android/src/com/theartofdev/edmodo/cropper/CropWindowMoveHandler.java"
-"/Users/prashant/Projects/Appcelerator_Studio_Workspace/imagecrop/android/src/in/prashant/imagecrop/ImageDemo.java"
 "/Users/prashant/Projects/Appcelerator_Studio_Workspace/imagecrop/android/src/in/prashant/imagecrop/ImagecropModule.java"
 "/Users/prashant/Projects/Appcelerator_Studio_Workspace/imagecrop/android/src/in/prashant/imagecrop/Params.java"
 "/Users/prashant/Projects/Appcelerator_Studio_Workspace/imagecrop/android/src/in/prashant/imagecrop/Utils.java"
