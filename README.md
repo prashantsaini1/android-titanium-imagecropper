@@ -61,6 +61,12 @@ A robust image cropping module based on [Android-Image-Cropper by ArthurHub](htt
 ```javascript
 require('in.prashant.imagecrop').crop({
     callback : function(e) {
+      
+      // 'e' is an object here with 3 key-values.
+      // 1- success = true OR false
+      // 2- error = empty string OR error message
+      // 3- image = cropped-image path OR empty
+      
       if (e.success) {
           $.imageV.image = '';
           $.imageV.image = e.image;
