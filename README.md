@@ -14,14 +14,11 @@ A robust image cropping module based on [Android-Image-Cropper by ArthurHub](htt
 ## Requirements & Installation
 * Ti SDK >= 7.0.0.GA
 * [Download latest module version from here](https://github.com/prashantsaini1/android-titanium-imagecropper/tree/master/android/dist)
-* Unzip it, put it in your Titanium project modules folder & add these lines to your tiapp.xml <modules> node.
+* Unzip it, put it in your Titanium project modules folder & add this lines to your tiapp.xml <modules> node.
 
-#### Must add these lines to your tiapp.xml (Last 2 lines force Titanium to use "javac source & target as 1.8" instead of default 1.6 even you set the Java 1.8 in your system)
 ```
 <module platform="android">in.prashant.imagecrop</module>
 
-<property name="android.javac.source" type="string">1.8</property>
-<property name="android.javac.target" type="string">1.8</property>
 ```
 
 
