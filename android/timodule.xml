@@ -15,11 +15,8 @@
     		
     		<application>
     			<activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
-				<activity android:name="in.prashant.imagecrop.ImageDemo" />
+			<activity android:name="in.prashant.imagecrop.ImageDemo" />
     		</application>
     	</manifest>
 	</android>
-	
-	<mobileweb>
-	</mobileweb>
 </ti:module>

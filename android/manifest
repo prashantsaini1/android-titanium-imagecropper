@@ -1,4 +1,4 @@
-version: 2.0.0
+version: 3.0.0
 apiversion: 4
 architectures: arm64-v8a armeabi-v7a x86
 description: Android-Titanium image cropping module for cropping camera/gallery/G-Drive etc. images 
@@ -11,4 +11,4 @@ name: imagecrop
 moduleid: in.prashant.imagecrop
 guid: 50ddfead-520c-43fe-8adc-7fadcc37cc1c
 platform: android
-minsdk: 7.0.0
+minsdk: 7.4.0
